@@ -2,16 +2,20 @@ import json
 from bs4 import BeautifulSoup
 
 # Helper function to safely get attribute value
+
+
 def get_attribute(element, attribute):
     value = element.attrs.get(attribute, '')
-    return 'n/a' if not value else value 
+    return 'n/a' if not value else value
+
 
 def extract_info(file_path):
     with open(file_path, 'r') as file:
         # As it's a JSONL file, each line is a separate JSON object
         for line in file:
             data = json.loads(line)
-            html_data = data.get('result', '')  # Get the HTML data from the 'result' property
+            # Get the HTML data from the 'result' property
+            html_data = data.get('result', '')
 
     # Create a BeautifulSoup object
     soup = BeautifulSoup(html_data, 'html.parser')
@@ -42,9 +46,11 @@ def extract_info(file_path):
         }
         property_details.append(details_dict)
 
-    print(property_details)
+    pretty_json = json.dumps(property_details, indent=4)
+    print(pretty_json)
     print(len(property_details))
 
+
 # Provide the path to your JSONL file
-file_path = 'house-job-818550-result.jsonl'
+file_path = 'jsonl/page-1-house-job-818550-result.jsonl'
 extract_info(file_path)
