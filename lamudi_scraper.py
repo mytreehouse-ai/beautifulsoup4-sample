@@ -5,16 +5,20 @@ from bs4 import BeautifulSoup
 file_path = 'jsonl/page-1-lot-job-818997-result.jsonl'
 
 # Function to get attribute safely
+
+
 def get_attribute(element, attribute):
     value = element.attrs.get(attribute, '')
     return 'n/a' if not value else value
+
 
 def extract_info(file_path):
     with open(file_path, 'r') as file:
         # As it's a JSONL file, each line is a separate JSON object
         for line in file:
             data = json.loads(line)
-            html_data = data.get('result', '')  # Get the HTML data from the 'result' property
+            # Get the HTML data from the 'result' property
+            html_data = data.get('result', '')
 
     # Create a BeautifulSoup object
     soup = BeautifulSoup(html_data, 'html.parser')
@@ -41,13 +45,14 @@ def extract_info(file_path):
             'block': get_attribute(element, 'data-block'),
             'subdivision_name': get_attribute(element, 'data-subdivisionname'),
             'sku': get_attribute(element, 'data-sku'),
-            'geo_point': get_attribute(element, 'data-geo-point'),
+            'geo_point': [float(coord.strip('[]')) for coord in get_attribute(element, 'data-geo-point').split(',')] if get_attribute(element, 'data-geo-point') != 'n/a' else 'n/a',
             'listing_link': element.find('a', class_='js-listing-link')['href'] if element.find('a', class_='js-listing-link') else None
         }
         property_details.append(details_dict)
 
     print(json.dumps(property_details, indent=4))
     print(len(property_details))
+
 
 # Provide the path to your JSONL file
 extract_info(file_path)
