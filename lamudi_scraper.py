@@ -31,13 +31,20 @@ def extract_info(file_path):
         details_dict = {
             'title': element.find('a', class_='js-listing-link')['title'] if element.find('a', class_='js-listing-link') else 'n/a',
             'price': get_attribute(element, 'data-price'),
+            # Seen in warehouse
+            'price_condition': get_attribute(element, 'data-price_conditions'),
             'category': get_attribute(element, 'data-category'),
             'subcategories': get_attribute(element, 'data-subcategories'),
             'year_built': get_attribute(element, 'data-year_built'),
+            'condo_name': get_attribute(element, 'data-condominiumname'),
+            # For warehouse
+            'subdivision_name': get_attribute(element, 'data-subdivisionname'),
             'car_spaces': get_attribute(element, 'data-car_spaces'),
             'bedrooms': get_attribute(element, 'data-bedrooms'),
             'bathrooms': get_attribute(element, 'data-bathrooms'),
+            # floor area
             'building_size': get_attribute(element, 'data-building_size'),
+            # sqm
             'land_size': get_attribute(element, 'data-land_size'),
             'furnished': get_attribute(element, 'data-furnished'),
             'classification': get_attribute(element, 'data-classification'),
