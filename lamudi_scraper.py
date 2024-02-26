@@ -2,7 +2,7 @@ import json
 from bs4 import BeautifulSoup
 
 # Load the JSONL file
-file_path = 'jsonl/page-1-lot-job-818997-result.jsonl'
+file_path = 'jsonl/page-1-warehouse-02252024.jsonl'
 
 # Function to get attribute safely
 
@@ -17,9 +17,8 @@ def extract_info(file_path):
         # As it's a JSONL file, each line is a separate JSON object
         for line in file:
             data = json.loads(line)
-            # Get the HTML data from the 'result' property
-            html_data = data.get('result', '')
-
+            # Get the HTML data from the 'response' -> 'body' property
+            html_data = data['response']['body']
     # Create a BeautifulSoup object
     soup = BeautifulSoup(html_data, 'html.parser')
 
